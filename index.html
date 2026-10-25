@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EPP: la última barrera</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Material digital interactivo sobre la jerarquía de control de riesgos y el EPP como última barrera de defensa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@600;800&display=swap">
+<style>
+/* Layout: una "pantalla" por vez, como una ficha de taller; barra de herramientas de accesibilidad fija arriba; la pirámide invertida es el elemento fuerte. Colores de señalización de seguridad (IRAM 10005): amarillo precaución, azul obligación (EPP), verde condición segura, rojo peligro. */
+:root {
+  --bg: #f3f4f1;
+  --surface: #ffffff;
+  --fg: #1d2125;
+  --muted: #545b62;
+  --line: #c9cdc6;
+  --yellow: #f2b705;
+  --on-yellow: #1d2125;
+  --blue: #0b5cad;
+  --green: #1e7a3c;
+  --red: #b3261e;
+  --tint-green: #e3f1e7;
+  --tint-red: #f8e4e2;
+  --tint-blue: #e2ecf7;
+  --focus: #0b5cad;
+  --font-display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  --font-body: "Atkinson Hyperlegible", Verdana, Arial, sans-serif;
+  --base: 1.0625rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15181b; --surface: #1f2327; --fg: #eef0ec; --muted: #b3b9be; --line: #3a4046;
+    --yellow: #f5c22e; --on-yellow: #15181b; --blue: #7cb4ef; --green: #6fcf8e; --red: #ff8a80;
+    --tint-green: #183323; --tint-red: #3a1d1b; --tint-blue: #172a40; --focus: #f5c22e;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15181b; --surface: #1f2327; --fg: #eef0ec; --muted: #b3b9be; --line: #3a4046;
+  --yellow: #f5c22e; --on-yellow: #15181b; --blue: #7cb4ef; --green: #6fcf8e; --red: #ff8a80;
+  --tint-green: #183323; --tint-red: #3a1d1b; --tint-blue: #172a40; --focus: #f5c22e;
+  color-scheme: dark;
+}
+/* Alto contraste elegido por el estudiante */
+:root.alto-contraste {
+  --bg: #000000; --surface: #000000; --fg: #ffffff; --muted: #ffffff; --line: #ffffff;
+  --yellow: #ffe600; --on-yellow: #000000; --blue: #6fd3ff; --green: #7dff9a; --red: #ff8f8f;
+  --tint-green: #000000; --tint-red: #000000; --tint-blue: #000000; --focus: #ffe600;
+  color-scheme: dark;
+}
+:root.letra-1 { --base: 1.1875rem; }
+:root.letra-2 { --base: 1.375rem; }
+:root.espaciado body { letter-spacing: .04em; word-spacing: .12em; }
+:root.espaciado p, :root.espaciado li { line-height: 1.9; }
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: var(--base); line-height: 1.55;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+a { color: var(--blue); text-underline-offset: .18em; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.05; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2.4rem, 7vw, 3.8rem); font-weight: 800; letter-spacing: .01em; }
+h2 { font-size: clamp(2rem, 5.5vw, 2.8rem); font-weight: 800; }
+h3 { font-size: 1.5rem; font-weight: 600; }
+p { margin: 0; max-width: 65ch; }
+.wrap { max-width: 60rem; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.saltar { position: absolute; left: -999px; top: 0; background: var(--yellow); color: var(--on-yellow); padding: .6rem 1rem; z-index: 20; font-weight: 700; }
+.saltar:focus { left: 1rem; top: calc(env(safe-area-inset-top, 0px) + .5rem); }
+
+/* Barra superior */
+.barra { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
+.barra .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; padding-block: .5rem; }
+.marca { font-family: var(--font-display); font-weight: 800; font-size: 1.25rem; letter-spacing: .03em; text-transform: uppercase; margin-right: auto; display: flex; align-items: center; gap: .5rem; }
+.marca span.cinta { width: 1.6rem; height: 1rem; background: repeating-linear-gradient(-45deg, var(--yellow) 0 6px, var(--fg) 6px 12px); border-radius: 2px; }
+.herramientas { display: flex; flex-wrap: wrap; gap: .4rem; }
+.herramientas button { font: inherit; font-size: .9rem; min-height: 2.5rem; padding: .3rem .7rem; border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 6px; cursor: pointer; }
+.herramientas button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+
+/* Menú de recorrido */
+nav.recorrido { border-bottom: 1px solid var(--line); background: var(--bg); }
+nav.recorrido ol { list-style: none; margin: 0; padding-block: .6rem; display: flex; gap: .4rem; overflow-x: auto; scrollbar-width: thin; }
+nav.recorrido a { display: flex; align-items: center; gap: .4rem; white-space: nowrap; text-decoration: none; color: var(--fg); padding: .35rem .7rem; border-radius: 999px; border: 1px solid var(--line); font-size: .92rem; background: var(--surface); }
+nav.recorrido a[aria-current="step"] { background: var(--yellow); color: var(--on-yellow); border-color: var(--yellow); font-weight: 700; }
+nav.recorrido .visto::after { content: "✓"; color: var(--green); font-weight: 700; }
+nav.recorrido a[aria-current="step"].visto::after { color: var(--on-yellow); }
+
+main { padding-block: 2rem 3rem; }
+.pantalla { display: grid; gap: 1.4rem; }
+.js .pantalla:not(.activa) { display: none; }
+.eyebrow { font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
+.lead { font-size: 1.2em; }
+.nota { color: var(--muted); font-size: .95em; }
+
+/* Portada */
+.portada { display: grid; gap: 1.2rem; }
+.cinta-ancha { height: .9rem; background: repeating-linear-gradient(-45deg, var(--yellow) 0 14px, var(--fg) 14px 28px); border-radius: 3px; }
+.pregunta { background: var(--surface); border: 2px solid var(--fg); border-radius: 10px; padding: 1.2rem; display: grid; gap: .9rem; }
+.pregunta .q { font-family: var(--font-display); font-size: 1.9rem; font-weight: 800; line-height: 1.1; }
+.opciones { display: flex; flex-wrap: wrap; gap: .6rem; }
+.btn { font: inherit; font-weight: 700; min-height: 2.9rem; padding: .55rem 1.1rem; border-radius: 8px; border: 2px solid var(--fg); background: var(--surface); color: var(--fg); cursor: pointer; text-align: left; }
+.btn:hover { background: var(--bg); }
+.btn.primario { background: var(--yellow); color: var(--on-yellow); border-color: var(--yellow); }
+.btn.primario:hover { filter: brightness(.95); }
+.btn[disabled] { opacity: .55; cursor: default; }
+.feedback { border-radius: 8px; padding: .9rem 1rem; display: grid; gap: .4rem; border-left: 6px solid var(--blue); background: var(--tint-blue); }
+.feedback.bien { border-left-color: var(--green); background: var(--tint-green); }
+.feedback.mal { border-left-color: var(--red); background: var(--tint-red); }
+.feedback:empty { display: none; }
+.feedback strong.titulo { font-size: 1.05em; }
+.objetivos { display: grid; gap: .5rem; padding-left: 1.2rem; margin: 0; }
+.rol { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 1rem 1.2rem; display: grid; gap: .5rem; }
+
+/* Pirámide invertida */
+.piramide { display: grid; gap: .35rem; justify-items: center; margin: .5rem 0; }
+.nivel { font: inherit; width: var(--w); max-width: 100%; min-height: 3.4rem; border: 0; cursor: pointer; color: #fff; display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: .5rem 1rem; border-radius: 4px; text-align: left; clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 14px 100%); padding-inline: 1.6rem; }
+.nivel .n { font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; text-transform: uppercase; letter-spacing: .03em; }
+.nivel .d { font-size: .85rem; opacity: .95; }
+.nivel[aria-expanded="true"] { outline: 4px solid var(--yellow); outline-offset: 2px; }
+.nivel:focus-visible { outline: 4px solid var(--focus); }
+.nv1 { --w: 100%; background: #14532d; }
+.nv2 { --w: 88%; background: #1e7a3c; }
+.nv3 { --w: 76%; background: #5b6b1f; }
+.nv4 { --w: 64%; background: #8a5a00; }
+.nv5 { --w: 52%; background: #0b5cad; }
+:root.alto-contraste .nivel { background: #000; border: 3px solid #fff; clip-path: none; }
+.eje { display: flex; justify-content: space-between; gap: 1rem; font-size: .9rem; color: var(--muted); font-weight: 700; }
+.detalle { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 1.2rem; display: grid; gap: 1rem; }
+.detalle[hidden] { display: none; }
+.detalle .def { font-size: 1.1em; }
+.ejemplos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; }
+.ejemplo { border-top: 4px solid var(--line); padding-top: .6rem; display: grid; gap: .25rem; align-content: start; min-width: 0; }
+.ejemplo .t { font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-weight: 700; }
+.chip { display: inline-block; font-size: .8rem; font-weight: 700; padding: .15rem .55rem; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); }
+
+/* Ordenar */
+.lista-orden { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; counter-reset: orden; }
+.lista-orden li { counter-increment: orden; display: grid; grid-template-columns: 2.2rem minmax(0,1fr) auto; align-items: center; gap: .6rem; background: var(--surface); border: 2px solid var(--line); border-radius: 8px; padding: .5rem .6rem; }
+.lista-orden li::before { content: counter(orden); font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; text-align: center; }
+.lista-orden li.ok { border-color: var(--green); background: var(--tint-green); }
+.lista-orden li.no { border-color: var(--red); background: var(--tint-red); }
+.mover { display: flex; gap: .3rem; }
+.mover button { font: inherit; width: 2.6rem; height: 2.6rem; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); cursor: pointer; font-size: 1.1rem; }
+.tabla-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 32rem; background: var(--surface); }
+th, td { text-align: left; padding: .6rem .7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--font-display); font-size: 1.1rem; letter-spacing: .03em; }
+
+/* Por qué es la última */
+.razones { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1rem; }
+.razon { border-top: 6px solid var(--blue); background: var(--surface); padding: 1rem; display: grid; gap: .5rem; align-content: start; min-width: 0; }
+.razon .num { font-family: var(--font-display); font-size: 2.6rem; font-weight: 800; line-height: 1; color: var(--blue); }
+.ley { border: 2px dashed var(--line); border-radius: 10px; padding: 1rem 1.2rem; display: grid; gap: .5rem; }
+.senal { display: inline-flex; align-items: center; gap: .5rem; font-weight: 700; }
+.senal i { width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--blue); display: inline-block; }
+
+/* Caso ramificado */
+.escena { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 1.2rem; display: grid; gap: 1rem; }
+.relato { border-left: 4px solid var(--yellow); padding-left: 1rem; display: grid; gap: .6rem; }
+.decisiones { display: grid; gap: .5rem; }
+.decisiones .btn { width: 100%; font-weight: 400; }
+.decisiones .btn b { font-weight: 700; }
+.huella { display: flex; flex-wrap: wrap; gap: .4rem; }
+
+/* V/F */
+.items { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+.item { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 1rem; display: grid; gap: .7rem; }
+.item .af { font-weight: 700; font-size: 1.08em; }
+.puntaje { font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; }
+
+/* Cierre */
+.regla { background: var(--yellow); color: var(--on-yellow); border-radius: 10px; padding: 1.4rem; display: grid; gap: .4rem; }
+.regla .grande { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.9rem, 5vw, 2.6rem); line-height: 1.05; }
+.auto { display: grid; gap: .6rem; }
+.auto label { display: flex; gap: .7rem; align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: .7rem .8rem; cursor: pointer; }
+.auto input { width: 1.4rem; height: 1.4rem; margin-top: .15rem; flex: none; accent-color: var(--green); }
+.enlaces { display: grid; gap: .4rem; padding-left: 1.2rem; margin: 0; }
+
+.pie-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .6rem; margin-top: .5rem; border-top: 1px solid var(--line); padding-top: 1.2rem; }
+footer { border-top: 1px solid var(--line); padding-block: 1.2rem 2rem; color: var(--muted); font-size: .9rem; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 720px) {
+  .ejemplos, .razones { grid-template-columns: minmax(0,1fr); }
+  .nv2 { --w: 94%; } .nv3 { --w: 88%; } .nv4 { --w: 82%; } .nv5 { --w: 76%; }
+  .nivel .d { display: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pantalla.activa { animation: entra .25s ease-out; }
+  @keyframes entra { from { transform: translateY(6px); } to { transform: none; } }
+}
+</style>
+<style>html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} body{margin:0} img{max-width:100%}</style>
+</head>
+<body>
+
+
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<header class="barra">
+  <div class="wrap">
+    <div class="marca"><span class="cinta" aria-hidden="true"></span>EPP: la última barrera</div>
+    <div class="herramientas" role="group" aria-label="Opciones de lectura">
+      <button type="button" id="btn-letra" aria-label="Agrandar la letra">A+ Letra</button>
+      <button type="button" id="btn-contraste" aria-pressed="false">Alto contraste</button>
+      <button type="button" id="btn-espaciado" aria-pressed="false">Más espacio</button>
+      <button type="button" id="btn-leer" aria-pressed="false">Escuchar</button>
+    </div>
+  </div>
+</header>
+
+<nav class="recorrido" aria-label="Recorrido del material">
+  <ol class="wrap">
+    <li><a href="#inicio" data-ir="inicio">Inicio</a></li>
+    <li><a href="#jerarquia" data-ir="jerarquia">La jerarquía</a></li>
+    <li><a href="#ruido" data-ir="ruido">Un problema, cinco soluciones</a></li>
+    <li><a href="#ultima" data-ir="ultima">La última barrera</a></li>
+    <li><a href="#caso" data-ir="caso">Caso Mateo</a></li>
+    <li><a href="#prueba" data-ir="prueba">Comprobá lo aprendido</a></li>
+    <li><a href="#cierre" data-ir="cierre">Cierre</a></li>
+  </ol>
+</nav>
+
+<main id="contenido" class="wrap" tabindex="-1">
+
+<!-- 1. INICIO -->
+<section class="pantalla" id="inicio" aria-labelledby="t-inicio">
+  <div class="portada">
+    <p class="eyebrow">Higiene y seguridad en las empresas</p>
+    <h1 id="t-inicio">Los EPP: la última línea de defensa</h1>
+    <div class="cinta-ancha" aria-hidden="true"></div>
+    <p class="lead">Antes de comenzar, respondé según lo que sabés hasta ahora. Esta pregunta no se califica: sirve para reconocer tus saberes previos.</p>
+  </div>
+
+  <div class="pregunta" id="disparadora">
+    <p class="q" id="q-casco">¿Ponerse el casco elimina el peligro?</p>
+    <div class="opciones" role="group" aria-labelledby="q-casco">
+      <button type="button" class="btn" data-disp="si">Sí, el casco elimina el peligro</button>
+      <button type="button" class="btn" data-disp="no">No, el peligro continúa presente</button>
+    </div>
+    <div class="feedback" id="fb-disparadora" aria-live="polite"></div>
+  </div>
+
+  <div class="rol">
+    <h3>Tu rol en este recorrido</h3>
+    <p>Como futuro Técnico en Administración de Empresas vas a tomar decisiones sobre recursos, compras y personas. En este material trabajás como parte de la <strong>consultora de seguridad</strong> de una organización: tu tarea es decidir qué medida conviene aplicar primero ante cada riesgo.</p>
+  </div>
+
+  <div class="rol">
+    <h3>Al terminar vas a poder</h3>
+    <ul class="objetivos">
+      <li>Nombrar y ordenar los cinco niveles de la jerarquía de control de riesgos.</li>
+      <li>Reconocer a qué nivel pertenece una medida concreta.</li>
+      <li>Explicar por qué el EPP es la última barrera y no la primera solución.</li>
+      <li>Proponer medidas para un caso real, empezando por la fuente del peligro.</li>
+    </ul>
+  </div>
+
+  <p class="nota">Cómo recorrer el material: podés usar el menú superior para ir a cualquier sección o avanzar con el botón "Siguiente" al pie de cada pantalla. El material funciona con mouse, con pantalla táctil o con teclado (teclas Tab y Enter). El botón "Escuchar" lee en voz alta el contenido de la pantalla.</p>
+</section>
+
+<!-- 2. JERARQUÍA -->
+<section class="pantalla" id="jerarquia" aria-labelledby="t-jerarquia">
+  <p class="eyebrow">Paso 1 · Conocer</p>
+  <h2 id="t-jerarquia">La jerarquía de control de riesgos</h2>
+  <p>La Organización Internacional del Trabajo (OIT) promueve controlar los riesgos en un orden: primero se actúa sobre la fuente del peligro y, recién al final, sobre la persona. Seleccioná cada nivel de la pirámide para conocer su definición y algunos ejemplos.</p>
+
+  <div class="eje" aria-hidden="true"><span>▲ Más efectivo: actúa en la fuente</span></div>
+  <div class="piramide" role="group" aria-label="Pirámide invertida de la jerarquía de control, del nivel más efectivo al menos efectivo">
+    <button type="button" class="nivel nv1" aria-expanded="false" aria-controls="det-1" data-nivel="1"><span class="n">1. Eliminación</span><span class="d">Quitar el peligro</span></button>
+    <button type="button" class="nivel nv2" aria-expanded="false" aria-controls="det-2" data-nivel="2"><span class="n">2. Sustitución</span><span class="d">Reemplazarlo</span></button>
+    <button type="button" class="nivel nv3" aria-expanded="false" aria-controls="det-3" data-nivel="3"><span class="n">3. Ingeniería</span><span class="d">Aislar a las personas</span></button>
+    <button type="button" class="nivel nv4" aria-expanded="false" aria-controls="det-4" data-nivel="4"><span class="n">4. Administración</span><span class="d">Cambiar cómo se trabaja</span></button>
+    <button type="button" class="nivel nv5" aria-expanded="false" aria-controls="det-5" data-nivel="5"><span class="n">5. EPP</span><span class="d">Proteger el cuerpo</span></button>
+  </div>
+  <div class="eje" aria-hidden="true"><span>▼ Menos efectivo: actúa en la persona</span></div>
+
+  <div class="detalle" id="det-1" hidden>
+    <h3>1. Eliminación</h3>
+    <p class="def">Se quita el peligro del lugar de trabajo. Si el peligro no existe, nadie se puede lastimar. Es la medida más efectiva.</p>
+    <div class="ejemplos">
+      <div class="ejemplo"><span class="t">Ruido</span><p>Digitalizar el proceso para que la máquina vieja y ruidosa ya no sea necesaria.</p></div>
+      <div class="ejemplo"><span class="t">Polvo de lijado</span><p>Comprar las piezas ya lijadas o terminadas, así nadie tiene que lijar.</p></div>
+      <div class="ejemplo"><span class="t">Cocina de la escuela</span><p>Descongelar y secar las papas antes de freírlas: sin agua no hay salpicadura violenta de aceite.</p></div>
+    </div>
+  </div>
+  <div class="detalle" id="det-2" hidden>
+    <h3>2. Sustitución</h3>
+    <p class="def">Se reemplaza lo peligroso por algo que no lo es, o que lo es mucho menos.</p>
+    <div class="ejemplos">
+      <div class="ejemplo"><span class="t">Ruido</span><p>Cambiar la máquina vieja por una máquina silenciosa.</p></div>
+      <div class="ejemplo"><span class="t">Polvo de lijado</span><p>Lijar en húmedo, un método que casi no levanta polvo.</p></div>
+      <div class="ejemplo"><span class="t">Cabina de pintura</span><p>Usar pintura al agua en lugar de pinturas con solventes tóxicos.</p></div>
+    </div>
+  </div>
+  <div class="detalle" id="det-3" hidden>
+    <h3>3. Controles de ingeniería</h3>
+    <p class="def">El peligro sigue existiendo, pero se lo aísla de las personas con cambios físicos: mallas, guardas, extractores, cabinas.</p>
+    <div class="ejemplos">
+      <div class="ejemplo"><span class="t">Ruido</span><p>Encerrar la máquina en una cabina insonorizada.</p></div>
+      <div class="ejemplo"><span class="t">Polvo de lijado</span><p>Lijadora con aspiración incorporada o un extractor localizado sobre la mesa.</p></div>
+      <div class="ejemplo"><span class="t">Taller de vestir y cocina</span><p>Guarda protectora en la cuchilla de la cortadora vertical. Campana extractora funcionando sobre la freidora.</p></div>
+    </div>
+  </div>
+  <div class="detalle" id="det-4" hidden>
+    <h3>4. Controles administrativos</h3>
+    <p class="def">Se cambia la forma de trabajar: procedimientos, capacitación, rotación de tareas, carteles y supervisión. Dependen de que las personas los cumplan.</p>
+    <div class="ejemplos">
+      <div class="ejemplo"><span class="t">Ruido</span><p>Organizar turnos de 10 minutos para que nadie esté expuesto mucho tiempo.</p></div>
+      <div class="ejemplo"><span class="t">Polvo de lijado</span><p>Rotar a quienes lijan, limitar el tiempo de exposición y limpiar con aspiradora en vez de escoba.</p></div>
+      <div class="ejemplo"><span class="t">Taller de la escuela</span><p>Capacitar sobre qué hacer si se empañan los anteojos. Dejar los guantes en el puesto de trabajo, no bajo llave.</p></div>
+    </div>
+  </div>
+  <div class="detalle" id="det-5" hidden>
+    <h3>5. Equipos de protección personal (EPP)</h3>
+    <p class="def">Una barrera individual entre el peligro y el cuerpo: casco, protectores auditivos, anteojos, guantes, barbijos. El peligro sigue ahí; el EPP solo reduce el daño si falla todo lo anterior.</p>
+    <div class="ejemplos">
+      <div class="ejemplo"><span class="t">Ruido</span><p>Protectores auditivos (tapones u orejeras).</p></div>
+      <div class="ejemplo"><span class="t">Polvo de lijado</span><p>Barbijo o respirador adecuado y antiparras.</p></div>
+      <div class="ejemplo"><span class="t">Taller de la escuela</span><p>Guante de malla de acero en la cortadora. Anteojos de seguridad en la freidora.</p></div>
+    </div>
+    <p class="senal"><i aria-hidden="true"></i>En la señalización de seguridad, el color azul indica obligación: "uso obligatorio de protección".</p>
+  </div>
+
+  <p class="nota">Para recordar el orden, conviene hacerse estas preguntas: ¿se puede eliminar el peligro?; si no, ¿se puede sustituir?; si no, ¿se puede aislar?; luego, ¿se puede organizar mejor el trabajo? El EPP se incorpora al final.</p>
+</section>
+
+<!-- 3. RUIDO: ORDENAR -->
+<section class="pantalla" id="ruido" aria-labelledby="t-ruido">
+  <p class="eyebrow">Paso 2 · Aplicar</p>
+  <h2 id="t-ruido">Un problema, cinco soluciones</h2>
+  <p>En un taller hay una máquina vieja que hace mucho ruido. La consultora juntó cinco propuestas. <strong>Ordenalas de la más efectiva (1) a la menos efectiva (5)</strong> con las flechas y después tocá "Comprobar".</p>
+
+  <ol class="lista-orden" id="lista-orden" aria-describedby="ayuda-orden"></ol>
+  <p class="nota" id="ayuda-orden">Cada propuesta tiene un botón para subir y otro para bajar. Podés comprobar todas las veces que quieras.</p>
+  <div class="opciones">
+    <button type="button" class="btn primario" id="btn-comprobar">Comprobar</button>
+    <button type="button" class="btn" id="btn-mezclar">Volver a mezclar</button>
+  </div>
+  <div class="feedback" id="fb-orden" aria-live="polite"></div>
+
+  <div id="tabla-ruido" hidden>
+    <h3>La jerarquía aplicada al ruido</h3>
+    <div class="tabla-wrap" tabindex="0" role="region" aria-label="Tabla: la jerarquía aplicada al ruido">
+      <table>
+        <thead><tr><th scope="col">Nivel</th><th scope="col">Medida</th><th scope="col">¿Qué pasa con el peligro?</th></tr></thead>
+        <tbody>
+          <tr><td>1. Eliminación</td><td>Digitalizar el proceso</td><td>Desaparece: ya no hay máquina ruidosa.</td></tr>
+          <tr><td>2. Sustitución</td><td>Máquina silenciosa</td><td>Se reduce desde el origen.</td></tr>
+          <tr><td>3. Ingeniería</td><td>Cabina insonorizada</td><td>Sigue, pero queda encerrado lejos de las personas.</td></tr>
+          <tr><td>4. Administración</td><td>Turnos de 10 minutos</td><td>Sigue igual; cada persona se expone menos tiempo.</td></tr>
+          <tr><td>5. EPP</td><td>Protectores auditivos</td><td>Sigue igual; si alguien se saca los protectores, la protección es cero.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 4. POR QUÉ ÚLTIMA -->
+<section class="pantalla" id="ultima" aria-labelledby="t-ultima">
+  <p class="eyebrow">Paso 3 · Comprender</p>
+  <h2 id="t-ultima">¿Por qué el EPP es la última barrera?</h2>
+  <p>El EPP es necesario, pero no debe ser la primera respuesta. Presenta tres limitaciones.</p>
+  <div class="razones">
+    <div class="razon"><span class="num" aria-hidden="true">1</span><h3>Depende de la persona</h3><p>Si no se usa, o se usa de manera incorrecta, la protección es del 0 %. Alcanza con retirarse los anteojos por un momento para quedar expuesto.</p></div>
+    <div class="razon"><span class="num" aria-hidden="true">2</span><h3>No elimina la causa</h3><p>El casco amortigua el golpe, pero la herramienta cayó de todos modos. El peligro sigue en el lugar de trabajo.</p></div>
+    <div class="razon"><span class="num" aria-hidden="true">3</span><h3>Es la barrera más frágil</h3><p>Puede romperse, empañarse o resultar incómodo, y además genera una falsa sensación de seguridad.</p></div>
+  </div>
+
+  <div class="ley">
+    <h3>Qué dice la norma argentina</h3>
+    <p>El <strong>Decreto 351/79, art. 190</strong> (reglamentario de la Ley 19.587) establece que los EPP se usan mientras se agotan las medidas técnicas para eliminar el riesgo en su origen. El <strong>art. 196</strong> pide protección auditiva "sin perjuicio de las medidas de ingeniería": entregar tapones no exime de insonorizar.</p>
+    <p>La <strong>Ley 19.587, art. 8 y 9</strong>, obliga al empleador a adoptar las medidas de prevención y a capacitar; el <strong>art. 10</strong> obliga al trabajador a cumplir las normas y usar los equipos de protección.</p>
+  </div>
+
+  <div class="pregunta">
+    <p class="q" id="q-lijado">En un taller hay mucho polvo de lijado. El encargado propone entregar barbijos a todos. ¿Eso resuelve el problema?</p>
+    <div class="opciones" role="group" aria-labelledby="q-lijado">
+      <button type="button" class="btn" data-lij="si">Sí, el barbijo es suficiente</button>
+      <button type="button" class="btn" data-lij="no">Ayuda, pero es solo la última barrera</button>
+    </div>
+    <div class="feedback" id="fb-lijado" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- 5. CASO MATEO (RAMIFICADO) -->
+<section class="pantalla" id="caso" aria-labelledby="t-caso">
+  <p class="eyebrow">Paso 4 · Decidir</p>
+  <h2 id="t-caso">Caso: Mateo y el vapor en la cocina</h2>
+  <div class="escena">
+    <div class="relato">
+      <p>Mateo es estudiante de último año y hace sus prácticas en el taller de gastronomía. Hoy le toca frituras. Hace mucho calor y <strong>la campana extractora tiene el motor roto</strong>. Por el vapor, sus anteojos de seguridad se empañan todo el tiempo, así que decide quitárselos: "es solo un ratito", piensa. Nadie le explicó qué hacer si se empañan. Al volcar papas congeladas en aceite a 180 °C, una salpicadura le quema la cara, cerca del ojo izquierdo.</p>
+      <p>La institución solicita a tu consultora una recomendación. Cada decisión que tomes modificará el desarrollo del caso.</p>
+    </div>
+  </div>
+  <div class="escena" id="escena" aria-live="polite"></div>
+  <div class="huella" id="huella" aria-label="Niveles que usaste en tu recomendación"></div>
+</section>
+
+<!-- 6. V/F -->
+<section class="pantalla" id="prueba" aria-labelledby="t-prueba">
+  <p class="eyebrow">Paso 5 · Comprobar</p>
+  <h2 id="t-prueba">Comprobá lo aprendido</h2>
+  <p>Indicá si cada afirmación es verdadera o falsa. Cada respuesta incluye una explicación y, en caso de error, podés intentarlo nuevamente.</p>
+  <ol class="items" id="items"></ol>
+  <p class="puntaje" id="puntaje" aria-live="polite"></p>
+</section>
+
+<!-- 7. CIERRE -->
+<section class="pantalla" id="cierre" aria-labelledby="t-cierre">
+  <p class="eyebrow">Cierre</p>
+  <h2 id="t-cierre">Síntesis</h2>
+  <div class="regla">
+    <span class="eyebrow" style="color:inherit">Regla de oro</span>
+    <p class="grande">Prevenir en la fuente antes de proteger al cuerpo.</p>
+  </div>
+  <p>Ante cualquier riesgo, conviene recorrer la pirámide de arriba hacia abajo: eliminar, sustituir, aislar, organizar y, al final, proteger con EPP. El EPP no se descarta: se usa siempre que quede un riesgo, como última barrera.</p>
+
+  <h3>Autoevaluación</h3>
+  <p class="nota">Marcá lo que considerás que ya podés hacer. Esta autoevaluación es personal y nadie más puede verla.</p>
+  <div class="auto" id="auto">
+    <label for="a1"><input type="checkbox" id="a1"> Puedo nombrar los cinco niveles en orden.</label>
+    <label for="a2"><input type="checkbox" id="a2"> Puedo decir a qué nivel pertenece una medida (por ejemplo, un extractor o un cartel).</label>
+    <label for="a3"><input type="checkbox" id="a3"> Puedo explicar con mis palabras por qué el EPP es la última barrera.</label>
+    <label for="a4"><input type="checkbox" id="a4"> Puedo proponer medidas para un caso real empezando por la fuente.</label>
+  </div>
+  <div class="feedback" id="fb-auto" aria-live="polite"></div>
+
+  <h3>Para seguir leyendo</h3>
+  <ul class="enlaces">
+    <li><a href="http://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/17612/norma.htm" target="_blank" rel="noopener">Ley 19.587 de Higiene y Seguridad en el Trabajo (InfoLEG, se abre en otra pestaña)</a></li>
+    <li><a href="http://servicios.infoleg.gob.ar/infolegInternet/anexos/30000-34999/32030/texact.htm" target="_blank" rel="noopener">Decreto 351/79, reglamentario de la Ley 19.587 (InfoLEG, se abre en otra pestaña)</a></li>
+  </ul>
+  <div class="opciones">
+    <button type="button" class="btn" id="btn-reiniciar">Reiniciar el recorrido</button>
+  </div>
+</section>
+
+<div class="pie-nav" id="pie-nav">
+  <button type="button" class="btn" id="btn-ant">← Anterior</button>
+  <button type="button" class="btn primario" id="btn-sig">Siguiente →</button>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Material elaborado por Paula Diez para el Taller de Innovación y Diseño de Materiales Digitales, 2026. Destinado a estudiantes del último año de una escuela de educación técnica, futuros Técnicos en Administración de Empresas.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  root.classList.add("js");
+  var orden = ["inicio", "jerarquia", "ruido", "ultima", "caso", "prueba", "cierre"];
+  var actual = "inicio";
+  var vistos = {};
+
+  function guardar(k, v) { try { localStorage.setItem("epp-" + k, JSON.stringify(v)); } catch (e) {} }
+  function leer(k, def) { try { var v = localStorage.getItem("epp-" + k); return v ? JSON.parse(v) : def; } catch (e) { return def; } }
+  function $(s, c) { return (c || document).querySelector(s); }
+  function $$(s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); }
+  function fb(el, tipo, titulo, texto) {
+    el.className = "feedback " + (tipo || "");
+    el.innerHTML = "<strong class=\"titulo\">" + titulo + "</strong><p>" + texto + "</p>";
+  }
+
+  /* ---------- Navegación ---------- */
+  function ir(id, enfocar) {
+    if (orden.indexOf(id) < 0) id = "inicio";
+    actual = id;
+    vistos[id] = true;
+    guardar("vistos", vistos);
+    $$(".pantalla").forEach(function (s) { s.classList.toggle("activa", s.id === id); });
+    $$("nav.recorrido a").forEach(function (a) {
+      var k = a.getAttribute("data-ir");
+      if (k === id) a.setAttribute("aria-current", "step"); else a.removeAttribute("aria-current");
+      a.classList.toggle("visto", !!vistos[k]);
+      if (k === id && a.scrollIntoView) { try { a.scrollIntoView({ block: "nearest", inline: "center" }); } catch (e) {} }
+    });
+    var i = orden.indexOf(id);
+    $("#btn-ant").hidden = i === 0;
+    $("#btn-sig").hidden = i === orden.length - 1;
+    if (i < orden.length - 1) $("#btn-sig").textContent = "Siguiente: " + $("nav.recorrido a[data-ir='" + orden[i + 1] + "']").textContent + " →";
+    detenerLectura();
+    if (enfocar) {
+      var h = $("#" + id + " h1, #" + id + " h2");
+      if (h) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
+      window.scrollTo(0, 0);
+    }
+    try { if (history.replaceState) history.replaceState(null, "", "#" + id); } catch (e) {}
+  }
+  $$("[data-ir]").forEach(function (a) {
+    a.addEventListener("click", function (e) { e.preventDefault(); ir(a.getAttribute("data-ir"), true); });
+  });
+  $("#btn-ant").addEventListener("click", function () { ir(orden[orden.indexOf(actual) - 1], true); });
+  $("#btn-sig").addEventListener("click", function () { ir(orden[orden.indexOf(actual) + 1], true); });
+  $(".saltar").addEventListener("click", function (e) { e.preventDefault(); $("#" + actual + " h1, #" + actual + " h2").focus(); });
+
+  /* ---------- Opciones de lectura (DUA: representación) ---------- */
+  var letra = leer("letra", 0);
+  function aplicarLetra() {
+    root.classList.remove("letra-1", "letra-2");
+    if (letra) root.classList.add("letra-" + letra);
+    var b = $("#btn-letra");
+    b.textContent = letra === 2 ? "A− Letra" : "A+ Letra";
+    b.setAttribute("aria-label", letra === 2 ? "Volver al tamaño de letra normal" : "Agrandar la letra");
+  }
+  $("#btn-letra").addEventListener("click", function () { letra = (letra + 1) % 3; guardar("letra", letra); aplicarLetra(); });
+  function alternar(btnId, clase, clave) {
+    var b = $(btnId), on = leer(clave, false);
+    function pintar() { root.classList.toggle(clase, on); b.setAttribute("aria-pressed", on ? "true" : "false"); }
+    b.addEventListener("click", function () { on = !on; guardar(clave, on); pintar(); });
+    pintar();
+  }
+  aplicarLetra();
+  alternar("#btn-contraste", "alto-contraste", "contraste");
+  alternar("#btn-espaciado", "espaciado", "espaciado");
+
+  var voz = window.speechSynthesis;
+  var btnLeer = $("#btn-leer");
+  if (!voz || typeof SpeechSynthesisUtterance === "undefined") { btnLeer.hidden = true; }
+  function detenerLectura() { if (voz) { try { voz.cancel(); } catch (e) {} } btnLeer.setAttribute("aria-pressed", "false"); btnLeer.textContent = "Escuchar"; }
+  btnLeer.addEventListener("click", function () {
+    if (btnLeer.getAttribute("aria-pressed") === "true") { detenerLectura(); return; }
+    var sec = $("#" + actual);
+    var partes = [];
+    $$("h1, h2, h3, p, li, .btn, td, .feedback, label", sec).forEach(function (el) {
+      if (el.closest("[hidden]") || el.offsetParent === null) return;
+      if (el.matches("li") && el.querySelector("p")) return;
+      var t = el.innerText.replace(/[↑↓←→✓]/g, "").trim();
+      if (t) partes.push(t);
+    });
+    var u = new SpeechSynthesisUtterance(partes.join(". "));
+    u.lang = "es-AR"; u.rate = 0.95;
+    var voces = voz.getVoices().filter(function (v) { return /^es/i.test(v.lang); });
+    if (voces.length) u.voice = voces.filter(function (v) { return v.lang === "es-AR"; })[0] || voces[0];
+    u.onend = detenerLectura;
+    voz.cancel(); voz.speak(u);
+    btnLeer.setAttribute("aria-pressed", "true"); btnLeer.textContent = "Detener lectura";
+  });
+
+  /* ---------- Pregunta disparadora ---------- */
+  $$("[data-disp]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var el = $("#fb-disparadora");
+      if (b.getAttribute("data-disp") === "no")
+        fb(el, "bien", "Correcto.", "El casco no elimina el peligro del lugar de trabajo: la herramienta puede caer de todos modos. Solo reduce el daño cuando se produce el golpe; por eso se lo considera un escudo final. A continuación, vas a conocer las medidas que deben aplicarse antes.");
+      else
+        fb(el, "mal", "Es una idea muy frecuente, pero no es correcta.", "El casco no elimina el peligro: la herramienta puede caer de todos modos y el casco solo amortigua el golpe. Además, genera una falsa sensación de seguridad. En este recorrido vas a conocer las medidas que deben aplicarse antes de recurrir al casco.");
+    });
+  });
+
+  /* ---------- Pirámide ---------- */
+  $$(".nivel").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var abierto = b.getAttribute("aria-expanded") === "true";
+      $$(".nivel").forEach(function (o) { o.setAttribute("aria-expanded", "false"); });
+      $$(".detalle").forEach(function (d) { d.hidden = true; });
+      if (!abierto) {
+        b.setAttribute("aria-expanded", "true");
+        var d = $("#det-" + b.getAttribute("data-nivel"));
+        d.hidden = false;
+        if (d.scrollIntoView && window.innerWidth < 720) { try { d.scrollIntoView({ block: "nearest" }); } catch (e) {} }
+      }
+    });
+  });
+
+  /* ---------- Ordenar (ruido) ---------- */
+  var medidas = [
+    { id: 1, t: "Digitalizar el proceso para no usar más la máquina" },
+    { id: 2, t: "Reemplazarla por una máquina silenciosa" },
+    { id: 3, t: "Encerrar la máquina en una cabina insonorizada" },
+    { id: 4, t: "Organizar turnos de 10 minutos" },
+    { id: 5, t: "Entregar protectores auditivos" }
+  ];
+  var nombres = ["Eliminación", "Sustitución", "Ingeniería", "Administración", "EPP"];
+  var estado = [5, 3, 1, 4, 2];
+  var lista = $("#lista-orden");
+  function pintarLista(foco) {
+    lista.innerHTML = "";
+    estado.forEach(function (id, i) {
+      var m = medidas[id - 1];
+      var li = document.createElement("li");
+      li.innerHTML = "<span>" + m.t + "</span><span class=\"mover\">" +
+        "<button type=\"button\" data-mov=\"-1\" data-i=\"" + i + "\" aria-label=\"Subir: " + m.t + "\"" + (i === 0 ? " disabled" : "") + ">↑</button>" +
+        "<button type=\"button\" data-mov=\"1\" data-i=\"" + i + "\" aria-label=\"Bajar: " + m.t + "\"" + (i === estado.length - 1 ? " disabled" : "") + ">↓</button></span>";
+      lista.appendChild(li);
+    });
+    if (foco) {
+      var b = $("button[data-i='" + foco.i + "'][data-mov='" + foco.mov + "']", lista) || $("button[data-i='" + foco.i + "']:not([disabled])", lista);
+      if (b) b.focus();
+    }
+  }
+  lista.addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-mov]");
+    if (!b) return;
+    var i = +b.getAttribute("data-i"), mov = +b.getAttribute("data-mov"), j = i + mov;
+    if (j < 0 || j >= estado.length) return;
+    var tmp = estado[i]; estado[i] = estado[j]; estado[j] = tmp;
+    $("#fb-orden").className = "feedback"; $("#fb-orden").innerHTML = "";
+    pintarLista({ i: j, mov: mov });
+  });
+  $("#btn-comprobar").addEventListener("click", function () {
+    var bien = 0;
+    $$("li", lista).forEach(function (li, i) {
+      var ok = estado[i] === i + 1;
+      if (ok) bien++;
+      li.classList.toggle("ok", ok); li.classList.toggle("no", !ok);
+    });
+    var el = $("#fb-orden");
+    if (bien === 5) {
+      fb(el, "bien", "Correcto: 5 de 5.", "Ordenaste las medidas desde la fuente hacia la persona: eliminar, sustituir, aislar, organizar y, finalmente, proteger con EPP. En la tabla siguiente se observa que en los dos últimos niveles el ruido no se modifica.");
+      $("#tabla-ruido").hidden = false;
+    } else {
+      fb(el, "mal", bien + " de 5 en su lugar.", "Las medidas marcadas en rojo no están en la posición correcta. Analizá cada una: ¿el ruido desaparece, se reduce en el origen, queda aislado o permanece igual y solo cambia el tiempo de exposición o la forma en que lo recibe la persona?");
+    }
+  });
+  $("#btn-mezclar").addEventListener("click", function () {
+    for (var i = estado.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = estado[i]; estado[i] = estado[j]; estado[j] = t; }
+    $("#fb-orden").className = "feedback"; $("#fb-orden").innerHTML = "";
+    pintarLista();
+  });
+  pintarLista();
+
+  /* ---------- Lijado ---------- */
+  $$("[data-lij]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var el = $("#fb-lijado");
+      if (b.getAttribute("data-lij") === "no")
+        fb(el, "bien", "Correcto.", "El barbijo protege a quien lo usa adecuadamente, pero el polvo permanece en el ambiente. Antes es posible comprar piezas ya lijadas (eliminación), lijar en húmedo (sustitución), utilizar lijadoras con aspiración (ingeniería), y rotar tareas y limpiar con aspiradora (administración). El barbijo queda como última barrera.");
+      else
+        fb(el, "mal", "Conviene revisar esta respuesta.", "El barbijo no elimina el polvo del ambiente: si alguien no lo usa o no se ajusta correctamente, igualmente respira el polvo. Antes corresponde analizar si se puede evitar el lijado, lijar en húmedo, aspirar el polvo en la fuente o rotar las tareas. El barbijo es necesario, pero como última medida.");
+    });
+  });
+
+  /* ---------- Caso ramificado ---------- */
+  var huella = [];
+  var escenas = {
+    inicio: {
+      p: "Primera decisión. ¿Qué recomendás hacer <strong>primero</strong>?",
+      op: [
+        { t: "<b>Comprar anteojos antiempañantes</b> para todos los estudiantes de cocina.", n: 5, ir: "epp" },
+        { t: "<b>Poner un cartel</b> \"Uso obligatorio de anteojos\" y pedir al profesor que controle.", n: 4, ir: "adm" },
+        { t: "<b>Reparar la campana extractora</b> para sacar el vapor de la cocina.", n: 3, ir: "ing" },
+        { t: "<b>Descongelar y secar las papas</b> antes de freírlas.", n: 1, ir: "elim" }
+      ]
+    },
+    epp: {
+      tipo: "mal", titulo: "Empezaste por la última barrera.",
+      txt: "Los anteojos nuevos ayudan, pero el vapor, el calor y el riesgo de salpicadura de aceite permanecen. Si Mateo vuelve a quitárselos, la protección es del 0 %. La causa está en la fuente: el extractor roto y el agua de las papas congeladas.",
+      op: [{ t: "Volver a decidir", ir: "inicio", volver: true }]
+    },
+    adm: {
+      tipo: "mal", titulo: "Es necesario, pero no es suficiente.",
+      txt: "El cartel y el control dependen de que las personas cumplan. Aunque Mateo cumpla, los anteojos seguirán empañándose porque el extractor continúa roto. ¿Qué se puede modificar en el lugar de trabajo antes de actuar sobre las personas?",
+      op: [{ t: "Volver a decidir", ir: "inicio", volver: true }]
+    },
+    ing: {
+      tipo: "bien", titulo: "Buena decisión: actuaste sobre el lugar de trabajo.",
+      txt: "Con la campana funcionando baja el vapor y los anteojos dejan de empañarse. Pero el agua de las papas congeladas sigue provocando salpicaduras de aceite a 180 °C. ¿Se puede ir todavía más arriba en la pirámide?",
+      op: [
+        { t: "Sí: además, <b>descongelar y secar las papas</b> antes de freír.", n: 1, ir: "paso2" },
+        { t: "No, con la campana el problema queda resuelto.", ir: "ingsolo" }
+      ]
+    },
+    ingsolo: {
+      tipo: "mal", titulo: "Todavía queda un peligro en la fuente.",
+      txt: "El vapor disminuyó, pero el agua congelada sigue provocando salpicaduras de aceite. Ese peligro se puede eliminar con un cambio simple en la tarea.",
+      op: [{ t: "Agregar: descongelar y secar las papas", n: 1, ir: "paso2" }]
+    },
+    elim: {
+      tipo: "bien", titulo: "Muy buena decisión: actuaste sobre la fuente.",
+      txt: "Sin agua en las papas no hay salpicadura violenta. Eliminaste la causa directa del accidente. Pero la campana sigue rota: el vapor y el calor siguen empañando los anteojos.",
+      op: [
+        { t: "Además, <b>reparar la campana extractora</b>.", n: 3, ir: "paso2" },
+        { t: "No es necesario hacer nada más.", ir: "elimsolo" }
+      ]
+    },
+    elimsolo: {
+      tipo: "mal", titulo: "Todavía queda un problema.",
+      txt: "El aceite caliente y el vapor siguen ahí. Con la campana rota, los anteojos se empañan y la cocina es insalubre. Conviene aislar ese peligro con un control de ingeniería.",
+      op: [{ t: "Agregar: reparar la campana extractora", n: 3, ir: "paso2" }]
+    },
+    paso2: {
+      tipo: "bien", titulo: "Actuaste sobre la fuente del peligro y sobre el lugar de trabajo.",
+      txt: "Último paso. Mateo nunca recibió una charla sobre qué hacer si se empañan los anteojos, y el aceite a 180 °C sigue siendo un peligro. ¿Qué agregás?",
+      op: [
+        { t: "<b>Capacitación</b> sobre frituras y empañamiento <b>y anteojos de seguridad</b> como última barrera.", n: [4, 5], ir: "final" },
+        { t: "Nada más: los anteojos ya no son necesarios.", ir: "sinepp" }
+      ]
+    },
+    sinepp: {
+      tipo: "mal", titulo: "El EPP no se descarta.",
+      txt: "El aceite caliente sigue siendo un riesgo que no se puede eliminar del todo. Para ese riesgo que queda, el EPP es la última barrera. Y la Ley 19.587 (art. 8) obliga a capacitar a quien trabaja.",
+      op: [{ t: "Agregar capacitación y anteojos", n: [4, 5], ir: "final" }]
+    },
+    final: {
+      tipo: "bien", titulo: "Recomendación completa.",
+      txt: "Tu propuesta recorre la pirámide de arriba hacia abajo: eliminar la causa de la salpicadura, aislar el vapor con la campana, capacitar y, al final, proteger con anteojos. Así, si algo falla, todavía queda una barrera. Eso es usar el EPP como última línea de defensa.",
+      op: [{ t: "Reiniciar el caso", ir: "reinicio" }, { t: "Ir a Comprobá lo aprendido →", ir: "#prueba" }]
+    }
+  };
+  function pintarHuella() {
+    var h = $("#huella");
+    var unicos = huella.filter(function (n, i) { return huella.indexOf(n) === i; }).sort();
+    h.innerHTML = unicos.length ? "<span class=\"nota\">Niveles en tu recomendación:</span> " + unicos.map(function (n) { return "<span class=\"chip\">" + n + ". " + nombres[n - 1] + "</span>"; }).join(" ") : "";
+  }
+  function escena(id, enfocar) {
+    if (id === "reinicio") { huella = []; id = "inicio"; }
+    if (id.charAt(0) === "#") { ir(id.slice(1), true); return; }
+    var s = escenas[id], c = $("#escena"), html = "";
+    if (s.titulo) html += "<div class=\"feedback " + s.tipo + "\"><strong class=\"titulo\">" + s.titulo + "</strong><p>" + s.txt + "</p></div>";
+    if (s.p) html += "<p>" + s.p + "</p>";
+    html += "<div class=\"decisiones\">" + s.op.map(function (o, i) { return "<button type=\"button\" class=\"btn\" data-op=\"" + i + "\">" + o.t + "</button>"; }).join("") + "</div>";
+    c.innerHTML = html;
+    $$("[data-op]", c).forEach(function (b) {
+      b.addEventListener("click", function () {
+        var o = s.op[+b.getAttribute("data-op")];
+        if (o.n && !o.volver) huella = huella.concat(o.n);
+        if (o.volver) huella = [];
+        pintarHuella();
+        escena(o.ir, true);
+      });
+    });
+    if (enfocar) { var f = $(".feedback, .btn", c); if (f) { f.setAttribute("tabindex", "-1"); f.focus(); } }
+  }
+  escena("inicio");
+
+  /* ---------- Verdadero o falso ---------- */
+  var vf = [
+    { a: "Ponerse el casco elimina el peligro.", v: false, e: "El casco reduce el daño, pero el peligro sigue en el lugar: la herramienta puede caer igual." },
+    { a: "Entregar protectores auditivos exime a la empresa de insonorizar la máquina.", v: false, e: "El Decreto 351/79 (art. 196) pide la protección auditiva \"sin perjuicio de las medidas de ingeniería\". Primero se actúa sobre la fuente del ruido." },
+    { a: "Conviene usar los EPP como primera opción porque son lo más rápido y barato.", v: false, e: "Son la última barrera: dependen de que la persona los use bien y no eliminan la causa. Antes van la eliminación, la sustitución, la ingeniería y la administración." },
+    { a: "Si un EPP no se usa, su protección es del 0 %.", v: true, e: "Por eso el EPP es la barrera más frágil: depende totalmente de la conducta humana." },
+    { a: "Una campana extractora es un control de ingeniería.", v: true, e: "Es un cambio físico que aísla el peligro (vapor, humo) de las personas." },
+    { a: "Un cartel que dice \"Uso obligatorio de protección auditiva\" es un control administrativo.", v: true, e: "Carteles, procedimientos, rotación y capacitación cambian la forma de trabajar: son controles administrativos." }
+  ];
+  var resp = {};
+  var itemsEl = $("#items");
+  vf.forEach(function (it, i) {
+    var li = document.createElement("li");
+    li.className = "item";
+    li.innerHTML = "<p class=\"af\" id=\"af-" + i + "\">" + (i + 1) + ". " + it.a + "</p>" +
+      "<div class=\"opciones\" role=\"group\" aria-labelledby=\"af-" + i + "\"><button type=\"button\" class=\"btn\" data-vf=\"1\">Verdadero</button><button type=\"button\" class=\"btn\" data-vf=\"0\">Falso</button></div>" +
+      "<div class=\"feedback\" aria-live=\"polite\"></div>";
+    $$("[data-vf]", li).forEach(function (b) {
+      b.addEventListener("click", function () {
+        var dijo = b.getAttribute("data-vf") === "1", ok = dijo === it.v;
+        if (!(i in resp)) resp[i] = ok;
+        fb($(".feedback", li), ok ? "bien" : "mal", ok ? "Correcto. Es " + (it.v ? "verdadero" : "falso") + "." : "Respuesta incorrecta. Intentalo nuevamente.", ok ? it.e : (it.v ? "Pista: identificá a qué nivel de la pirámide corresponde y qué efecto tiene sobre el peligro." : "Pista: analizá si esa medida actúa sobre la fuente o sobre la persona."));
+        var n = Object.keys(resp).length;
+        if (n === vf.length) {
+          var bien = Object.keys(resp).filter(function (k) { return resp[k]; }).length;
+          $("#puntaje").textContent = "Respondiste correctamente " + bien + " de " + vf.length + " en el primer intento.";
+        }
+      });
+    });
+    itemsEl.appendChild(li);
+  });
+
+  /* ---------- Autoevaluación ---------- */
+  $$("#auto input").forEach(function (c) {
+    c.checked = !!leer(c.id, false);
+    c.addEventListener("change", function () {
+      guardar(c.id, c.checked);
+      var n = $$("#auto input:checked").length, el = $("#fb-auto");
+      if (n === 4) fb(el, "bien", "Objetivos alcanzados.", "Ya podés aplicar la jerarquía de control. En la próxima clase la utilizaremos para analizar distintos ambientes de trabajo.");
+      else if (n > 0) fb(el, "", "Buen avance.", "Para los aspectos que todavía no marcaste, volvé a la sección correspondiente desde el menú. Podés repetir las actividades todas las veces que necesites.");
+      else { el.className = "feedback"; el.innerHTML = ""; }
+    });
+  });
+
+  $("#btn-reiniciar").addEventListener("click", function () {
+    vistos = {}; guardar("vistos", vistos);
+    huella = []; pintarHuella(); escena("inicio");
+    ir("inicio", true);
+  });
+
+  vistos = leer("vistos", {}) || {};
+  var h = (location.hash || "").replace("#", "");
+  ir(orden.indexOf(h) >= 0 ? h : "inicio", false);
+})();
+</script>
+
+</body>
+</html>
